@@ -18,13 +18,13 @@ eia.cats <- tibble(id = all$Sub_Categories$category_id %>% as.character(),
 for(i in 1:nrow(eia.cats)){
   print(i)
   foo <- EIAdata::getCatEIA(key,eia.cats$id[i])
-  
+
   bar <- tibble(id = foo$Sub_Categories$category_id %>% as.character(),
          name = paste(eia.cats$name[i],"!!!",foo$Sub_Categories$name %>% as.character()),
          level = 2)
-  
+
   eia.cats <- eia.cats %>% rbind(bar)
-  
+
 }
 
 # loop for all sub-sub-categories
@@ -32,11 +32,11 @@ for(i in 1:nrow(eia.cats)){
   if(eia.cats$level[i] == 2){
   print(i)
   foo <- EIAdata::getCatEIA(key,eia.cats$id[i])
-  
+
   bar <- tibble(id = foo$Sub_Categories$category_id %>% as.character(),
                 name = paste(eia.cats$name[i],"!!!",foo$Sub_Categories$name %>% as.character()),
                 level = 3)
-  
+
   eia.cats <- eia.cats %>% rbind(bar)
   }
 }
@@ -46,28 +46,28 @@ for(i in 1:nrow(eia.cats)){
   if(eia.cats$level[i] == 3){
     print(i)
     foo <- EIAdata::getCatEIA(key,eia.cats$id[i])
-    
+
     bar <- tibble(id = foo$Sub_Categories$category_id %>% as.character(),
                   name = paste(eia.cats$name[i],"!!!",foo$Sub_Categories$name %>% as.character()),
                   level = 4)
-    
+
     eia.cats <- eia.cats %>% rbind(bar)
   }
 }
 
-
+# Create Empty Series
 eia.series <- tibble(series_id = "",name = "",f = "",units = "",updated = "")
 
 
-for(i in i:nrow(eia.cats)){
+for(i in 1:nrow(eia.cats)){
     print(i)
     foo <- EIAdata::getCatEIA(key,eia.cats$id[i])
-    
-    
+
+
     if(nrow(foo$Series_IDs) != 0){
-    
+
     bar <- foo$Series_IDs %>% as.tibble()
-    
+
     eia.series <- eia.series %>% rbind(bar)
   }
 }
@@ -80,5 +80,3 @@ write_csv(eia.series,"series.csv")
 subset(eia.cats,level ==3)
 foo1 <- EIAdata::getCatEIA(key,2)
 nrow(foo1$Series_IDs)
-
-
