@@ -55,10 +55,10 @@ for(i in 1:nrow(eia.cats)){
   }
 }
 
-# Create Empty Series
+# Create Empty Object
 eia.series <- tibble(series_id = "",name = "",f = "",units = "",updated = "")
 
-
+# Populate Empty Object with Series info
 for(i in 1:nrow(eia.cats)){
     print(i)
     foo <- EIAdata::getCatEIA(key,eia.cats$id[i])
