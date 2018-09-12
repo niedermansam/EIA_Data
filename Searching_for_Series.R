@@ -59,7 +59,7 @@ for(i in 1:nrow(eia.cats)){
 eia.series <- tibble(series_id = "",name = "",f = "",units = "",updated = "")
 
 # Populate Empty Object with Series info
-for(i in 1:nrow(eia.cats)){
+for(i in i:nrow(eia.cats)){
     print(i)
     foo <- EIAdata::getCatEIA(key,eia.cats$id[i])
 
@@ -72,11 +72,8 @@ for(i in 1:nrow(eia.cats)){
   }
 }
 
-eia.series
+eia.series <- eia.series[!eia.series$series_id %>% duplicated(),]
 
 write_csv(eia.cats,"categories.csv")
 write_csv(eia.series,"series.csv")
 
-subset(eia.cats,level ==3)
-foo1 <- EIAdata::getCatEIA(key,2)
-nrow(foo1$Series_IDs)
